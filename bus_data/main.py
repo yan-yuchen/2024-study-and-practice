@@ -104,6 +104,18 @@ def main(city, key, province):
         keywords = i["name"]
         research(city, keywords, key, bus_station, buslines_information, buslines_polyline, station_frequency)
 
+
+    df = pd.read_csv(bus_station)
+    df = df.groupby('站点名称').agg({
+    'lng': 'first',  # 选择每个组的第一个lng值
+    'lat': 'first',  # 选择每个组的第一个lat值
+    '正反线路': 'first',  # 选择每个组的第一个正反线路值
+    '线路名称': lambda x: ', '.join(x),  # 将线路名称用逗号连接起来
+    '线路频次': 'sum'  # 对线路频次进行求和
+    })
+    df.reset_index(inplace=True)
+    df.to_csv(now_path + city + "公交站点.csv", index=False, encoding='utf_8_sig')
+
     conversion_geo.main(bus_station, buslines_information, buslines_polyline, city, province)
 
 key = '223b73f9c6529a7c9b5df21d98f51962' #您的高德key——注意：一定是申请web端
