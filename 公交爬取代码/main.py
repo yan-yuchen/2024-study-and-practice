@@ -114,25 +114,14 @@ def main(city, key, province):
         research(city, keywords, key, bus_station, buslines_information, buslines_polyline)
         time.sleep(random.randint(0, 1))
 
-    # 新建字段存储线路频次
-    df = pd.read_csv('./data/黑龙江/csv/哈尔滨公交站点.csv')
-    # 根据站点名称分组，并对name字段进行合并，使用', '作为分隔符
-    # 同时创建一个新字段'线路频次'，初始化为1
-    df['线路频次'] = 1
-    df = df.groupby('站点名称').agg({
-        'lng': 'first',
-        'lat': 'first',
-        '正反线路': 'first',
-        'name': lambda x: ', '.join(x),
-        '线路频次': 'sum'
-    }).reset_index()
-    df.to_csv(now_path + city + "公交站点.csv", index=False, encoding='utf_8_sig')
-
     conversion_geo.main(bus_station, buslines_information, buslines_polyline, city, province)
 
-key = '223b73f9c6529a7c9b5df21d98f51962' #您的高德key——注意：一定是申请web端
-jscode = 'ff21e90565e73b1edee6e08e708641a8' #对应web端的秘钥
-province = "黑龙江"
-city = "哈尔滨" #不要带市、县
+
+#待修改参数
+key = ''   #您的高德key——注意：一定是申请web端
+jscode = '' #对应web端的秘钥
+province = "辽宁省"
+city = "丹东" #不要带市、县
+
 
 main(city, key, province)

@@ -6,11 +6,6 @@ import os
 import requests
 from ChineseAdminiDivisionsDict import CitiesCode, ProvinceCode
 
-import pyproj
-# pyproj.datadir.get_data_dir()
-path = 'D:\work\miniconda3\Library\share\proj'
-pyproj.datadir.set_data_dir(path)
-
 def boundary_judgment(city,gdf):
     try:
         url = "https://geo.datav.aliyun.com/areas/bound/geojson?code={}".format(CitiesCode[str(city)])
@@ -54,7 +49,7 @@ def point(path1,city,now_path):
     if os.path.isdir(now_path+"/point")==False:
         os.mkdir(now_path+"/point")
     bus_station = pd.read_csv(path1)
-    # bus_station = bus_station.drop_duplicates('id')
+    bus_station = bus_station.drop_duplicates('id')
     gdf_bus_station = gpd.GeoDataFrame(bus_station, geometry=gpd.points_from_xy(bus_station.lng, bus_station.lat))
     gdf_bus_station.crs = 'EPSG:4326'
     
@@ -77,5 +72,3 @@ def main(path1,path2,path3,city,province):
     point(path1,city,now_path)
     """线路shp数据保存"""
     Create_busline(path2,path3,city,now_path)
-
-
